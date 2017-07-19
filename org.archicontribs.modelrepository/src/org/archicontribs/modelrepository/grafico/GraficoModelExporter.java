@@ -59,6 +59,12 @@ public class GraficoModelExporter implements IGraficoConstants {
      * Local repo folder
      */
     private File fLocalRepoFolder;
+    
+    /**
+    * List used for EMF {@link XMLResource#OPTION_USE_CACHED_LOOKUP_TABLE} option value. Packaged
+    * in a ThreadLocal per EMF recommendation for thread safety.
+    */
+    private ThreadLocal<List<Object>> lookupTable;
 	
 	/**
 	 * @param model The model to export
@@ -99,7 +105,10 @@ public class GraficoModelExporter implements IGraficoConstants {
         fResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMLResourceFactoryImpl()); //$NON-NLS-1$
         // Add a URIConverter that will be used to map full filenames to logical names
         fResourceSet.setURIConverter(new ExtensibleURIConverterImpl());
-
+        
+        // create a new lookupTable
+        lookupTable = new ThreadLocal<List<Object>>();
+        
         // Now work on a copy
         IArchimateModel copy = EcoreUtil.copy(fModel);
         
@@ -184,6 +193,7 @@ public class GraficoModelExporter implements IGraficoConstants {
         resource.getDefaultSaveOptions().put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.FALSE);
         // Use cache
         resource.getDefaultSaveOptions().put(XMLResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
+        resource.getDefaultSaveOptions().put(XMLResource.OPTION_USE_CACHED_LOOKUP_TABLE, lookupTable.get());
         // Add the object to the resource
         resource.getContents().add(object);
     }

@@ -24,6 +24,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobGroup;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+
 import com.archimatetool.editor.model.IArchiveManager;
 import com.archimatetool.editor.utils.FileUtils;
 import com.archimatetool.model.FolderType;
@@ -116,9 +123,30 @@ public class GraficoModelExporter implements IGraficoConstants {
         createAndSaveResourceForFolder(copy, modelFolder);
 
         // Now save all Resources
+        JobGroup jobgroup = new JobGroup("GraficoModelExporter", 0, 1);
+        
         for(Resource resource : fResourceSet.getResources()) {
-            resource.save(null);
+        	Job job = new Job("First Job") {
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+						resource.save(null);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    return Status.OK_STATUS;
+                }
+            };
+            job.setJobGroup(jobgroup);
+            job.schedule();
         }
+        try {
+			jobgroup.join(0, null);
+		} catch (OperationCanceledException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     /**

@@ -124,29 +124,29 @@ public class GraficoModelExporter implements IGraficoConstants {
 
         // Now save all Resources
         System.out.println("Export>save starts at: "+System.currentTimeMillis());
-//        JobGroup jobgroup = new JobGroup("GraficoModelExporter", 0, 1);
+        JobGroup jobgroup = new JobGroup("GraficoModelExporter", 0, 1);
         
         for(Resource resource : fResourceSet.getResources()) {
-//        	Job job = new Job("First Job") {
-//                @Override
-//                protected IStatus run(IProgressMonitor monitor) {
-//                    try {
+        	Job job = new Job("First Job") {
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
 						resource.save(null);
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//                    return Status.OK_STATUS;
-//                }
-//            };
-//            job.setJobGroup(jobgroup);
-//            job.schedule();
-//        }
-//        try {
-//			jobgroup.join(0, null);
-//		} catch (OperationCanceledException | InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    return Status.OK_STATUS;
+                }
+            };
+            job.setJobGroup(jobgroup);
+            job.schedule();
+        }
+        try {
+			jobgroup.join(0, null);
+		} catch (OperationCanceledException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
         System.out.println("Export>save ends at:   "+System.currentTimeMillis());
     }

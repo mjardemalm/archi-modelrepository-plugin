@@ -59,16 +59,18 @@ public class CloneModelAction extends AbstractModelAction {
             return;
         }
     	
-        final String repoURL = dialog.getURL();
+        final String repoURL = "git@github.com:archimate-models/archisurance.git";
         final String userName = dialog.getUsername();
         final String userPassword = dialog.getPassword();
         
         if(!StringUtils.isSet(repoURL) && !StringUtils.isSet(userName) && !StringUtils.isSet(userPassword)) {
-            return;
+            //return;
         }
         
-        File localRepoFolder = new File(ModelRepositoryPlugin.INSTANCE.getUserModelRepositoryFolder(),
-                GraficoUtils.getLocalGitFolderName(repoURL));
+        //File localRepoFolder = new File(ModelRepositoryPlugin.INSTANCE.getUserModelRepositoryFolder(),
+        //        GraficoUtils.getLocalGitFolderName(repoURL));
+        
+        File localRepoFolder = new File(ModelRepositoryPlugin.INSTANCE.getUserModelRepositoryFolder(), "poo");
         
         // Folder is not empty
         if(localRepoFolder.exists() && localRepoFolder.isDirectory() && localRepoFolder.list().length > 0) {
@@ -94,7 +96,7 @@ public class CloneModelAction extends AbstractModelAction {
                     monitor.beginTask(Messages.CloneModelAction_4, IProgressMonitor.UNKNOWN);
                     
                     // Proxy check
-                    ProxyAuthenticater.update(repoURL);
+                    //ProxyAuthenticater.update(repoURL);
                     
                     // Clone
                     getRepository().cloneModel(repoURL, userName, userPassword, this);

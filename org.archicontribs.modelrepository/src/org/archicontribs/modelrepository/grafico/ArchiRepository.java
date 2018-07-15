@@ -32,6 +32,7 @@ import org.eclipse.jgit.api.RemoteAddCommand;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.BranchTrackingStatus;
@@ -48,15 +49,26 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.FetchResult;
+import org.eclipse.jgit.transport.JschConfigSessionFactory;
+import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.transport.PushResult;
+import org.eclipse.jgit.transport.SshSessionFactory;
+import org.eclipse.jgit.transport.SshTransport;
+import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
+import org.eclipse.jgit.util.FS;
 
 import com.archimatetool.editor.model.IEditorModelManager;
 import com.archimatetool.editor.utils.StringUtils;
 import com.archimatetool.model.IArchimateModel;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+
+
 
 /**
  * Representation of a local repository
@@ -180,7 +192,31 @@ public class ArchiRepository implements IArchiRepository {
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setDirectory(getLocalRepositoryFolder());
         cloneCommand.setURI(repoURL);
-        cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, userPassword));
+        //cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, userPassword));
+        
+        SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
+            @Override
+            protected void configure(Host host, Session session) {
+                
+            }
+            
+            @Override
+            protected JSch createDefaultJSch(FS fs) throws JSchException {
+                JSch jsch = super.createDefaultJSch(fs);
+                
+                jsch.addIdentity("C:\\Users\\Phillipus\\.ssh\\id_rsa", userPassword);
+                
+                return jsch;
+            }
+        };
+        
+        cloneCommand.setTransportConfigCallback(new TransportConfigCallback() {
+            @Override
+            public void configure(Transport transport) {
+                ((SshTransport)transport).setSshSessionFactory(sshSessionFactory);
+            }
+        });
+        
         cloneCommand.setProgressMonitor(monitor);
             
         try(Git git = cloneCommand.call()) {

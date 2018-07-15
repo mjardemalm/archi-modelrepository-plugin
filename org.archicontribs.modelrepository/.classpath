@@ -4,5 +4,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.jgit-4.10.0.201712302008-r.jar" sourcepath="lib/org.eclipse.jgit.source_4.10.0.201712302008-r.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="lib/com.jcraft.jsch_0.1.54.v20170116-1932.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

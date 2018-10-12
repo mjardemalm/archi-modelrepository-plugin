@@ -32,7 +32,8 @@ public class RepoInfoSection extends AbstractArchiPropertySection {
     
     private Text fTextFile;
     private Text fTextURL;
-
+    private Text fTextBranch;
+    
     public RepoInfoSection() {
     }
 
@@ -43,6 +44,9 @@ public class RepoInfoSection extends AbstractArchiPropertySection {
 
         createLabel(parent, Messages.RepoInfoSection_1, STANDARD_LABEL_WIDTH, SWT.CENTER);
         fTextURL = createSingleTextControl(parent, SWT.READ_ONLY);
+
+        createLabel(parent, Messages.RepoInfoSection_2, STANDARD_LABEL_WIDTH, SWT.CENTER);
+        fTextBranch = createSingleTextControl(parent, SWT.READ_ONLY);        
         
         // Because of bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=383750
         // But causes ModelRepositoryView to lose focus when selecting
@@ -58,6 +62,7 @@ public class RepoInfoSection extends AbstractArchiPropertySection {
             
             try {
                 fTextURL.setText(repo.getOnlineRepositoryURL());
+                fTextBranch.setText(repo.getBranchName());
             }
             catch(IOException ex) {
                 ex.printStackTrace();

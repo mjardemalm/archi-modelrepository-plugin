@@ -547,4 +547,11 @@ public class ArchiRepository implements IArchiRepository {
         
         return sb.toString();
     }
+
+	@Override
+	public String getBranchName() throws IOException {
+        try(Git git = Git.open(getLocalRepositoryFolder())) {
+        	return git.getRepository().getBranch();
+        }
+	}
 }

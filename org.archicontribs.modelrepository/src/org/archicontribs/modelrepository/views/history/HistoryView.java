@@ -298,7 +298,7 @@ implements IContextProvider, ISelectionListener, IRepositoryListener {
         // Update if selectedRepository is different 
         if(selectedRepository != null && !selectedRepository.equals(fSelectedRepository)) {
             // Set label text
-            fRepoLabel.setText(Messages.HistoryView_0 + " " + selectedRepository.getName()); //$NON-NLS-1$
+            fRepoLabel.setText(Messages.HistoryView_0 + " " + selectedRepository.getName() + " (" + selectedRepository.getBranchName() + ")"); //$NON-NLS-1$
             getViewer().setInput(selectedRepository);
             
             // Do the table kludge

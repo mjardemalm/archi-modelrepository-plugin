@@ -7,6 +7,7 @@ package org.archicontribs.modelrepository.actions;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.archicontribs.modelrepository.IModelRepositoryImages;
 import org.archicontribs.modelrepository.ModelRepositoryPlugin;
@@ -111,7 +112,7 @@ public class CreateRepoFromModelAction extends AbstractModelAction {
                     try {
                         getRepository().pushToRemote(userName, userPassword, new ProgressMonitorWrapper(pm));
                     }
-                    catch(GitAPIException | IOException ex) {
+                    catch(GitAPIException | IOException | URISyntaxException ex) {
                         exception[0] = ex;
                     }
                 }

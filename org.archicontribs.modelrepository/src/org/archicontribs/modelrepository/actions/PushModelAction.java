@@ -7,6 +7,7 @@ package org.archicontribs.modelrepository.actions;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 
 import org.archicontribs.modelrepository.IModelRepositoryImages;
 import org.archicontribs.modelrepository.authentication.UsernamePassword;
@@ -69,7 +70,7 @@ public class PushModelAction extends RefreshModelAction {
                 try {
                     getRepository().pushToRemote(up.getUsername(), up.getPassword(), new ProgressMonitorWrapper(pm));
                 }
-                catch(GitAPIException | IOException ex) {
+                catch(GitAPIException | IOException | URISyntaxException ex) {
                     exception[0] = ex;
                 }
             }

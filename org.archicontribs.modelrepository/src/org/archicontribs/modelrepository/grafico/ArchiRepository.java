@@ -190,13 +190,18 @@ public class ArchiRepository implements IArchiRepository {
     }
 
     @Override
-    public Iterable<PushResult> pushToRemote(String userName, String userPassword, ProgressMonitor monitor) throws IOException, GitAPIException {
+    public Iterable<PushResult> pushToRemote(String userName, String userPassword, ProgressMonitor monitor) throws IOException, GitAPIException, URISyntaxException {
         try(Git git = Git.open(getLocalRepositoryFolder())) {
-            PushCommand pushCommand = git.push();
+        	RemoteAddCommand remoteAddCommand = git.remoteAdd();
+        	remoteAddCommand.setName(getBranchName());
+        	remoteAddCommand.setUri(new URIish(getOnlineRepositoryURL()));
+        	remoteAddCommand.call();
+        	
+        	PushCommand pushCommand = git.push();
             pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, userPassword));
             pushCommand.setProgressMonitor(monitor);
             return pushCommand.call();
-        }
+        } 
     }
     
     @Override

@@ -98,8 +98,9 @@ public interface IArchiRepository extends IGraficoConstants {
      * @return 
      * @throws IOException
      * @throws GitAPIException
+     * @throws URISyntaxException 
      */
-    Iterable<PushResult> pushToRemote(String userName, String userPassword, ProgressMonitor monitor) throws IOException, GitAPIException;
+    Iterable<PushResult> pushToRemote(String userName, String userPassword, ProgressMonitor monitor) throws IOException, GitAPIException, URISyntaxException;
 
     /**
      * Pull from Remote

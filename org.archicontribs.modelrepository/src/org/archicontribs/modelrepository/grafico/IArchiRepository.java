@@ -36,7 +36,7 @@ public interface IArchiRepository extends IGraficoConstants {
      * @return The current working branch
      * @throws IOException 
      */
-    String getBranchName() throws IOException;   
+    String getBranchName();   
 
     /**
      * @return The .archimate file in the local repo

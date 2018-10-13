@@ -549,9 +549,13 @@ public class ArchiRepository implements IArchiRepository {
     }
 
 	@Override
-	public String getBranchName() throws IOException {
-        try(Git git = Git.open(getLocalRepositoryFolder())) {
-        	return git.getRepository().getBranch();
+	public String getBranchName() {
+        String branch = "";
+		try(Git git = Git.open(getLocalRepositoryFolder())) {
+        	branch = git.getRepository().getBranch();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+		return branch;
 	}
 }

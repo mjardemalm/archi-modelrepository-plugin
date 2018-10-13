@@ -59,10 +59,10 @@ public class RepoInfoSection extends AbstractArchiPropertySection {
             IArchiRepository repo = (IArchiRepository)selection.getFirstElement();
             
             fTextFile.setText(repo.getLocalRepositoryFolder().getAbsolutePath());
+            fTextBranch.setText(repo.getBranchName());
             
             try {
                 fTextURL.setText(repo.getOnlineRepositoryURL());
-                fTextBranch.setText(repo.getBranchName());
             }
             catch(IOException ex) {
                 ex.printStackTrace();

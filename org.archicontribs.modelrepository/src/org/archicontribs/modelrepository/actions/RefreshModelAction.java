@@ -81,6 +81,18 @@ public class RefreshModelAction extends AbstractModelAction {
         }
     }
     
+    /**
+     * Secures synchronization between model temporary file and
+     * GRAFICO files.
+     *  - Saves model (e.g. force a commit)
+     *  - Export to GRAFICO files
+     *  
+     *  Collects credentials for synchronized model repository.
+     * 
+     * @return Model repository user credentials object.  
+     * @throws IOException
+     * @throws GitAPIException
+     */
     protected UsernamePassword init() throws IOException, GitAPIException {
         // Offer to save the model if open and dirty
         // We need to do this to keep grafico and temp files in sync
@@ -114,6 +126,21 @@ public class RefreshModelAction extends AbstractModelAction {
         return up;
     }
     
+    /**
+     * Pulls model repository from remote and calculate status.
+     * 
+     * Initiates a merge handler if status is merge conflict.
+     * 
+     * Reloads the model temporary files from the GRAFICO files.
+     * 
+     * Offers user to commit merged work. 
+     * 
+     * Notify listeners for changed model.
+     * 
+     * @param up User Credentials object
+     * @return Status from the pull operation.
+     * @throws Exception
+     */
     protected int pull(UsernamePassword up) throws Exception {
         PullResult[] pullResult = new PullResult[1];
         Exception[] exception = new Exception[1];

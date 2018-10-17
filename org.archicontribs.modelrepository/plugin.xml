@@ -14,6 +14,11 @@
             name="Toggle Change History">
       </command>
       <command
+            defaultHandler="org.archicontribs.modelrepository.actions.ShowBranchInfoViewHandler"
+            id="org.archicontribs.modelrepository.command.showBranchInfoView"
+            name="Toggle Branch Information">
+      </command>      
+      <command
             defaultHandler="org.archicontribs.modelrepository.actions.CreateRepoFromModelHandler"
             id="org.archicontribs.modelrepository.command.createRepoFromModel"
             name="Add Local Model to Workspace and Publish">
@@ -185,6 +190,11 @@
                   icon="img/history_view.png"
                   style="push">
             </command>
+            <command
+                  commandId="org.archicontribs.modelrepository.command.showBranchInfoView"
+                  icon="img/history_view.png"
+                  style="push">
+            </command>            
          </menu>
       </menuContribution>
       <menuContribution
@@ -235,6 +245,11 @@
                   icon="img/history_view.png"
                   style="push">
             </command>
+            <command
+                  commandId="org.archicontribs.modelrepository.command.showBranchInfoView"
+                  icon="img/history_view.png"
+                  style="push">
+            </command>            
          </toolbar>
       </menuContribution>
    </extension>
@@ -252,6 +267,13 @@
             icon="img/history_view.png"
             id="org.archicontribs.modelrepository.historyView"
             name="%history_repository"
+            restorable="true">
+      </view>
+       <view
+            class="org.archicontribs.modelrepository.views.branch.BranchInfoView"
+            icon="img/history_view.png"
+            id="org.archicontribs.modelrepository.branchInfoView"
+            name="%branch_repository"
             restorable="true">
       </view>
    </extension>

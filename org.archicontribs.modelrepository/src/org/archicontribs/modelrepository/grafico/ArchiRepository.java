@@ -19,9 +19,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.stream.Stream;
 
 import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.CheckoutCommand;
 import org.eclipse.jgit.api.CleanCommand;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CommitCommand;
+import org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode;
 import org.eclipse.jgit.api.FetchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.InitCommand;
@@ -32,7 +34,11 @@ import org.eclipse.jgit.api.RemoteAddCommand;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRefNameException;
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
+import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.BranchTrackingStatus;
 import org.eclipse.jgit.lib.ConfigConstants;
@@ -229,6 +235,30 @@ public class ArchiRepository implements IArchiRepository {
         }
     }
 
+    @Override
+    public Ref checkoutBranch(String branchName) throws IOException, GitAPIException {
+    	try(Git git = Git.open(getLocalRepositoryFolder())) {
+   
+    		// setCreateBranch must be set to true only if the branch don't exist locally
+    		boolean createBranch = !ObjectId.isId(branchName);
+		    if (createBranch) {
+		        Ref ref = git.getRepository().exactRef("refs/heads/" + branchName);
+		        if (ref != null) {
+		            createBranch = false;
+		        }
+		    }
+    		
+			Ref ref = git.checkout().
+			        setCreateBranch(createBranch).
+			        setName(branchName).
+			        setUpstreamMode(SetupUpstreamMode.TRACK).
+			        setStartPoint("origin/" + branchName).
+			        call();    		
+    		
+    		return ref;
+    	}
+    }
+    
     @Override
     public Git createNewLocalGitRepository(String URL) throws GitAPIException, IOException, URISyntaxException {
         if(getLocalRepositoryFolder().exists() && getLocalRepositoryFolder().list().length > 0) {

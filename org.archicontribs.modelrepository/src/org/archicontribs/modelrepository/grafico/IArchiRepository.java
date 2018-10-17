@@ -9,6 +9,7 @@ import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.PushResult;
@@ -212,4 +213,13 @@ public interface IArchiRepository extends IGraficoConstants {
      * @throws IOException
      */
     public void saveUserDetails(String name, String email) throws IOException;
+
+	/**
+	 * Checkout a branch.
+	 * @param branchName
+	 * @return The reference to the checked out branch.
+	 * @throws IOException
+	 * @throws GitAPIException
+	 */
+	Ref checkoutBranch(String branchName) throws IOException, GitAPIException;
 }

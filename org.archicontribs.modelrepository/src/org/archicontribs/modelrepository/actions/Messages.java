@@ -105,7 +105,15 @@ public class Messages extends NLS {
     public static String UndoLastCommitAction_0;
 
     public static String UndoLastCommitAction_1;
+    
+    public static String CheckoutBranchAction_0;
+    
+	public static String DeleteBranchAction_0;
 
+	public static String AddNewBranchAction_0;
+
+	public static String MergeBranchToMasterAction_0;
+	
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
